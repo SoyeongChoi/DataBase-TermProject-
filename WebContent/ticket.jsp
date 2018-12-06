@@ -7,6 +7,27 @@
 <title>Insert title here</title>
 </head>
 <body>   
+<%
+   String member_id = "";
+   try{
+      Cookie[] cookies = request.getCookies();
+      if(cookies != null){
+         for(int i =0; i<cookies.length;i++){
+            if(cookies[i].getName().equals("id")){
+               member_id = cookies[i].getValue();
+            }
+         }
+         if(member_id.equals("")){
+            response.sendRedirect("loginForm.jsp");
+         }
+      }else{
+         response.sendRedirect("loginForm.jsp");
+      }
+   }catch(Exception e){
+      
+   }
+   System.out.println("member_id"+member_id);
+   %>
 	<h2>티켓 발권 여부 확인하기</h2>
 	<form method="post" action="ticketPro.jsp">
 		<input type="text" name = "id" value="아이디를 입력하세요" onfocus="this.value=''">

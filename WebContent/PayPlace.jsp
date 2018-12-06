@@ -12,12 +12,34 @@
 </head>
 <body>
 	<h2>결제페이지</h2>
+	<%
+   String member_id = "";
+   try{
+      Cookie[] cookies = request.getCookies();
+      if(cookies != null){
+         for(int i =0; i<cookies.length;i++){
+            if(cookies[i].getName().equals("id")){
+               member_id = cookies[i].getValue();
+            }
+         }
+         if(member_id.equals("")){
+            response.sendRedirect("loginForm.jsp");
+         }
+      }else{
+         response.sendRedirect("loginForm.jsp");
+      }
+   }catch(Exception e){
+      
+   }
+   System.out.println("member_id"+member_id);
+   %>
 	<input type="button" value="메인으로 돌아가기" onclick="main()">
 	<script type="text/javascript">
 		function main() {
-			location.href = "cookieMain.jsp";
+			location.href = "cookieMainManager.jsp";
 		}
 	</script>
+	
 	<%
 		Class.forName("com.mysql.jdbc.Driver");
 		String jdbcUrl = "jdbc:mysql://localhost:3306/reservation_system?useUnicode=true&characterEncoding=utf8";
@@ -66,7 +88,7 @@
 					UserId = rs.getString(2);
 					String SeatCode = rs.getString(3);
 					String ScheduleCode = rs.getString(4);
-					String[] seat = SeatCode.split("&");
+					String[] seat = SeatCode.split("@");
 					String ScreenId = rs.getString(5);
 					//두번째 쿼리
 					Statement stmt2 = conn.createStatement();

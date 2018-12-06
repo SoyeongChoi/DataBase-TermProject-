@@ -43,9 +43,12 @@
 			 Calendar oCalendar = Calendar.getInstance(); // 현재 날짜/시간 등의 각종 정보 얻기
 			 int nowYear = oCalendar.get(Calendar.YEAR);
              System.out.println(nowYear);
-             String str_nowDate = String.valueOf(nowYear)+String.valueOf(oCalendar.get(Calendar.MONTH) + 1)
-                   + String.valueOf(oCalendar.get(Calendar.DAY_OF_MONTH));
-             
+             String day = String.valueOf(oCalendar.get(Calendar.DAY_OF_MONTH));
+             if(String.valueOf(oCalendar.get(Calendar.DAY_OF_MONTH)).length()==1){
+                day = "0"+day;
+             }
+             String str_nowDate = String.valueOf(nowYear)+ String.valueOf(oCalendar.get(Calendar.MONTH) + 1) + day;
+            
 
 			Connection conn = DriverManager.getConnection(jdbcUrl, dbId, dbPass);
 			Statement stmt = conn.createStatement();
@@ -79,7 +82,7 @@
 				first = false;
 			}
 			PreparedStatement pstmt2 = conn.prepareStatement("insert into 결제 values(?,?,?,?,?,?)");
-			pstmt2.setString(1, reservList[i]+"&결제=true&결제일="+str_nowDate);
+			pstmt2.setString(1, reservList[i]+"@결제=true@결제일="+str_nowDate);
 			pstmt2.setString(2, UserId);
 			pstmt2.setString(3, "현장");
 			pstmt2.setString(4, SeatCode);
@@ -90,18 +93,18 @@
 			pstmt3.setString(1,reservList[i]);
 			pstmt2.executeUpdate();
 			pstmt3.executeUpdate();
-			String payCode = reservList[i]+"&결제=true&결제일="+str_nowDate;
-			String res[] = payCode.split("&");
-			String ticketCode = res[0] + "&" + res[1] + "&" + res[2] + "&" + res[3] + "&" + res[4] + "&"
-					+ res[5] + "&" + res[6] + "&" + res[7];
+			String payCode = reservList[i]+"@결제=true@결제일="+str_nowDate;
+			String res[] = payCode.split("@");
+			String ticketCode = res[0] + "@" + res[1] + "@" + res[2] + "@" + res[3] + "@" + res[4] + "@"
+					+ res[5] + "@" + res[6] + "@" + res[7];
 			String check = "select * from 티켓 where 티켓예매번호=" + "'" + ticketCode + "'";
 			ResultSet rs4 = stmt.executeQuery(totalSql);
 			boolean ticket_check = true;
 			int ticket_count = 0;
 
 				PreparedStatement pstmt = conn.prepareStatement("insert into 티켓 values (?, ?, ?, ?)");
-				pstmt.setString(1, res[0] + "&" + res[1] + "&" + res[2] + "&" + res[3] + "&" + res[4] + "&"
-						+ res[5] + "&" + res[6] + "&" + res[7]);
+				pstmt.setString(1, res[0] + "@" + res[1] + "@" + res[2] + "@" + res[3] + "@" + res[4] + "@"
+						+ res[5] + "@" + res[6] + "@" + res[7]);
 				pstmt.setInt(2, 1);
 				pstmt.setString(3, SeatCode);
 				pstmt.setString(4, payCode);

@@ -10,12 +10,18 @@
 
 	LogonDBBean logon = LogonDBBean.getInstance();
 	int check = logon.userCheck(id, passwd);
-
+	int mcheck = logon.managerCheck(id);
+	
 	if (check == 1) { // 둘다 맞으면
 		Cookie cookie = new Cookie("id", id);
 		cookie.setMaxAge(60*60*24); //1일
 		response.addCookie(cookie);
-		response.sendRedirect("cookieMain.jsp");
+		if(mcheck==1){//관리자면
+			response.sendRedirect("cookieMainManager.jsp");
+		}
+		else{
+			response.sendRedirect("cookieMainMember.jsp");
+		}
 	} else if (check == 0) { // 패스워드 틀리면
 		%>
 		<script>

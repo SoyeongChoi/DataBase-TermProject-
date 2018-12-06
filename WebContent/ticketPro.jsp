@@ -12,6 +12,27 @@
 	<h2>티켓확인</h2>
 
 
+<%
+   String member_id = "";
+   try{
+      Cookie[] cookies = request.getCookies();
+      if(cookies != null){
+         for(int i =0; i<cookies.length;i++){
+            if(cookies[i].getName().equals("id")){
+               member_id = cookies[i].getValue();
+            }
+         }
+         if(member_id.equals("")){
+            response.sendRedirect("loginForm.jsp");
+         }
+      }else{
+         response.sendRedirect("loginForm.jsp");
+      }
+   }catch(Exception e){
+      
+   }
+   System.out.println("member_id"+member_id);
+   %>
 
 	<%
 		String id = request.getParameter("id");
@@ -60,18 +81,16 @@
 
 					if (test) {
 						String payCode = rs.getString(1);
-						String[] PayDate = payCode.split("&");
+						String[] PayDate = payCode.split("@");
 						String payDate = PayDate[PayDate.length - 1];
 						String UserId = rs.getString(2);
 						String payType = rs.getString(3);
 						String SeatCode = rs.getString(4);
-						String seat[] = SeatCode.split("&");
+						String seat[] = SeatCode.split("@");
 						String ScheduleCode = rs.getString(5);
-						String[] schedule = ScheduleCode.split("&");
-						String startTime = String.valueOf(schedule[0].charAt(0)) + String.valueOf(schedule[0].charAt(1))
-								+ " : " + String.valueOf(schedule[0].charAt(2)) + String.valueOf(schedule[0].charAt(3));
-						String endTime = String.valueOf(schedule[1].charAt(0)) + String.valueOf(schedule[1].charAt(1))
-								+ " : " + String.valueOf(schedule[1].charAt(2)) + String.valueOf(schedule[1].charAt(3));
+						String[] schedule = ScheduleCode.split("@");
+						String startTime =schedule[0];
+						String endTime = schedule[1];
 						String ScreenId = rs.getString(6);
 
 						Statement stmt2 = conn.createStatement();
@@ -89,6 +108,19 @@
 						ResultSet rs3 = stmt.executeQuery(MovieSql);
 						rs3.first();
 						String MovieName = rs3.getString(1);
+						
+						if(startTime.length()==3){
+							startTime="0"+startTime.substring(0,1);
+						}
+						else{
+							startTime=startTime.substring(0,2);
+						}
+						if(endTime.length()==3){
+							endTime="0"+endTime.substring(0,1);
+						}
+						else{
+							endTime=endTime.substring(0,2);
+						}
 		%>
 		<tr>
 			<td><%=MovieName%></td>
@@ -96,7 +128,7 @@
 			<td><%=ScreenName%></td>
 			<td><%=payDate%></td>
 			<td><%=seat[0]%>행 <%=seat[1]%>열</td>
-			<td>일시 : <%=schedule[2]%> <br /> <%=startTime%> ~ <%=endTime%></td>
+			<td>일시 : <%=schedule[2]%> <br /> <%=startTime%>:00 ~ <%=endTime%>:00</td>
 			<td><%=payType%></td>
 		</tr>
 		<%
@@ -151,13 +183,14 @@
 						while (rs5.next()) {
 							String reservationCode = rs5.getString(1);
 							//reservationCode = 예약일+좌석행+좌석열+상영관아이디(=영화관이름+상영관이름)+상영일정코드
-							String reservCode[] = reservationCode.split("&");
+							String reservCode[] = reservationCode.split("@");
 							String UserId = rs5.getString(2);
 							String SeatCode = rs5.getString(3);
 							String ScreenScheduleCode = rs5.getString(4);
-							String Schedule[] = ScreenScheduleCode.split("&");
+							String Schedule[] = ScreenScheduleCode.split("@");
 							String startTime = Schedule[0];
 							String endTime = Schedule[1];
+							String screenDay=Schedule[2];
 							String ScreenId = rs5.getString(5);
 							Statement stmt2 = conn.createStatement();
 							String ScreenSql = "select 영화아이디, 영화관이름, 상영관이름 from 상영관 where 상영관아이디=" + "'" + ScreenId + "'";
@@ -170,6 +203,18 @@
 							ResultSet rs3 = stmt3.executeQuery(ScreenSql);
 							rs3.first();
 							String MovieName = rs3.getString(1);
+							if(startTime.length()==3){
+								startTime="0"+startTime.substring(0,1);
+							}
+							else{
+								startTime=startTime.substring(0,2);
+							}
+							if(endTime.length()==3){
+								endTime="0"+endTime.substring(0,1);
+							}
+							else{
+								endTime=endTime.substring(0,2);
+							}
 			%>
 
 			<tr>
@@ -177,16 +222,16 @@
 					value="<%=MovieName%>"><%=MovieName%></td>
 				<td><%=TheaterName%></td>
 				<td><%=ScreenName%></td>
-				<td><%=reservCode[0]%></td>
-				<td><%=reservCode[1] + "행" + reservCode[2] + "열"%></td>
-				<td><%=startTime + "~" + endTime%></td>
+				<td><%=reservCode[0].substring(0,4)+"."+reservCode[0].substring(4,6)+"."+reservCode[0].substring(6,8)%></td>
+				<td><%=reservCode[1]+"행"+reservCode[2]+"열"%></td>
+				<td><%=screenDay.substring(0,4)+"."+screenDay.substring(4,6)+"."+screenDay.substring(6,8)+"\n"+startTime+":00" +"~"+ endTime+":00" %></td>
 				<td><input type="checkbox" name="selectedItems"
 					value="<%=reservationCode%>" /></td>
 				<td><input type="hidden" name="reservationCode"
 					value="<%=reservationCode%>" /> <input type="button"
 					onclick="cancelRsv()" value="예약취소"></td>
 			</tr>
-
+		<%} %>
 		</table>
 		<input type="button" value="결제하기" onclick="submitfuc(2)" />
 	</form>
@@ -228,7 +273,6 @@
 	</script>
 
 	<%
-		}
 			}
 
 			rs.close();

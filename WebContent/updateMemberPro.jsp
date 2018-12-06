@@ -14,13 +14,10 @@
 <%
    LogonDBBean logon = LogonDBBean.getInstance();
    logon.updateMember(member);
+   String id= member.getId();
 %>
 
 <jsp:getProperty property="id" name="member" />님의 회원정보가 수정되었습니다.
 <br />
-<input type="button" value="메인으로 돌아가기" onclick="main()">
-<script type="text/javascript">
-   function main() {
-      location.href = "cookieMain.jsp";
-   }
-</script>
+
+<input type="submit" value="메인으로 돌아가기" onclick="location.href='cookieMain.jsp?id='+'<%=id%>'">

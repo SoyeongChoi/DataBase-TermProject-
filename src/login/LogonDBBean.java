@@ -171,4 +171,35 @@ public class LogonDBBean {
 		}
 		return x;
 	}
+	
+	public int managerCheck(String id) throws Exception{
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String dbgrade = "";
+		System.out.println("id"+id);
+		int x = -1;
+		try {
+			conn = getConnection();
+			pstmt = conn.prepareStatement("select 회원등급 from 회원 where 회원아이디 = ?");
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dbgrade = rs.getString("회원등급");
+				if(dbgrade.equals("관리자"))
+					x = 1;
+				else
+					x = 0;
+			}else
+				x = -1;
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}finally {
+			if(rs != null) try {rs.close();} catch(SQLException ex) {}
+			if(pstmt != null) try {pstmt.close();} catch(SQLException ex) {}
+			if(conn != null) try {conn.close();} catch(SQLException ex) {}
+		}
+		return x;
+	}
 }

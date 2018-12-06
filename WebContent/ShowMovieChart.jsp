@@ -15,13 +15,7 @@
 <body>
 
    <h2>영화 차트 보기</h2>
-
-   <input type="button" value="메인으로 돌아가기" onclick="main()">
-   <script type="text/javascript">
-      function main() {
-         location.href = "cookieMain.jsp";
-      }
-   </script>
+   <input type="button" value="메인으로 돌아가기" onclick="location.href='cookieMainMember.jsp?'">
 
    <br />
    <br />
@@ -124,7 +118,7 @@
          %>
          <tr>
 
-            <td><input type="radio" name="id" value="<%=id%>"></td>
+            <td><%=size+1 %></td>
             <td><%=id%></td>
             <td><%=title%></td>
             <td><%=director%></td>
