@@ -49,19 +49,7 @@
     r2.setScreen_id(screen_id);
     r2.setRcode(now+"@"+seat_code+"@"+screen_id+"@"+time_code);
     r.insertReservation(r2);
-    float r_count = r.CountReservation();
-    LogonDBBeanScreen s = LogonDBBeanScreen.getInstance();
-    String[] screen = s.getScreenId(id);
-    float movie_count = 0;
-    for(int i=0; i<screen.length; i++){
-    	movie_count = movie_count + r.CountMovie(screen[i]);
-    }
-    LogonDBBeanMovie m = LogonDBBeanMovie.getInstance();
-    System.out.println(movie_count);
-    System.out.println(r_count);
-    System.out.println(movie_count/r_count);
-    m.updateMovie(id, (float)(movie_count/r_count)*100);
-    
+	
    %>
     
     예약이 완료되었습니다.<br/>

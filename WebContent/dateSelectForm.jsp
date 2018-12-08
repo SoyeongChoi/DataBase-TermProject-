@@ -34,8 +34,10 @@
    <%
       request.setCharacterEncoding("utf-8");
       String id = request.getParameter("id");
+  	String nowDate = request.getParameter("selectDay");
       LogonDBBeanMovie logon = LogonDBBeanMovie.getInstance();
     String[] date = logon.getDate(id);
+    System.out.println("!!!!!!!11"+id);
     SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
     SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
    
@@ -50,6 +52,22 @@
 
     Date date2 = sdf.parse(date[1]);
     String Date2 = sdf2.format(date2);
+    Calendar oCalendar = Calendar.getInstance();
+	int nowYear = oCalendar.get(Calendar.YEAR);
+	 String day = String.valueOf(oCalendar.get(Calendar.DAY_OF_MONTH));
+     if(String.valueOf(oCalendar.get(Calendar.DAY_OF_MONTH)).length()==1){
+    	 day = "0"+day;
+     }
+     String str_nowDate = String.valueOf(oCalendar.get(Calendar.MONTH) + 1) + day;
+	String now = String.valueOf(nowYear) + str_nowDate;
+	
+	Date date3 = sdf.parse(now);
+	String Date3 = sdf2.format(date3);//현재날짜
+	String StimeEtime[][]=null;
+	if(nowDate!=null){		
+		Date3 = nowDate;
+	}
+	
 
          %>
    
@@ -61,31 +79,10 @@
          
             
             <%
-            Calendar oCalendar = Calendar.getInstance();
-            int nowYear =oCalendar.get(Calendar.YEAR);
-            String day = String.valueOf(oCalendar.get(Calendar.DAY_OF_MONTH));
-            if(String.valueOf(oCalendar.get(Calendar.DAY_OF_MONTH)).length()==1){
-           	 day = "0"+day;
-            }
-            String str_nowDate = String.valueOf(oCalendar.get(Calendar.MONTH) + 1) + day;
-            String now = String.valueOf(nowYear)+str_nowDate;
-            int nowDate = Integer.parseInt(now);
-            if(Integer.parseInt(start_m)<oCalendar.get(Calendar.MONTH)+1){
-               date1 = sdf.parse(now);
-              Date1 = sdf2.format(date1);
-            }else{
-               if(Integer.parseInt(start_d)<nowDate){
-                  date1 = sdf.parse(now);
-                  Date1 = sdf2.format(date1);
-               }
-            }
-            Date date3 = sdf.parse(now);
-            String Date3 = sdf2.format(date3);
-         
-               %>
+                %>
                <tr>
                <td><input type="date" id="start" name="date" value="<%=Date3%>"
-         min="<%=Date1%>" max="<%=Date2%>"></td>
+         min="<%=Date1%>" max="<%=Date2%>" onchange="handler(event);"></td>
                
                </tr>
                
@@ -97,6 +94,11 @@
    </table>
       <input type="submit" value = "날짜선택">
    </form>
-   
+   <script>
+   function handler(e){
+		  var day = e.target.value;
+		  location.href="dateSelectForm.jsp?selectDay="+day+"&id="+"<%=id%>";
+		}
+   </script>
 </body>
 </html>

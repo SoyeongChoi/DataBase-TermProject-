@@ -52,10 +52,11 @@
   	 request.setCharacterEncoding("utf-8");
   	String id = request.getParameter("id");
   	String date = request.getParameter("date");
+  	System.out.println("!!!!!!!!!!"+date);
       Class.forName("com.mysql.jdbc.Driver");
       String jdbcUrl = "jdbc:mysql://localhost:3306/reservation_system?useUnicode=true&characterEncoding=utf8";
       String dbId = "root";
-      String dbPass = "thdud5313";
+      String dbPass = "Lovedkwjd23@";
       int total = 0;
       try {
          Connection conn = DriverManager.getConnection(jdbcUrl, dbId, dbPass);

@@ -49,7 +49,7 @@
    <body>
       <h2>회원 정보 수정</h2>
       <form method="post" action="updateMemberPro.jsp">
-         아이디 : <input type="text" name="id" value=<%=id%> maxlength="30" disabled><br /> 
+         아이디 : <input type="text" name="id" value=<%=id%> maxlength="30" readonly><br /> 
          비밀번호 : <input type="text" name="passwd" value=<%=passwd%> maxlength="30"><br />
          성명 : <input type="text" name="name" value=<%=name%> maxlength="30"><br /> 
          생년월일 : <input type="number" name="birth" value=<%=birth%> maxlength="10"><br /> 

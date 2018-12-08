@@ -69,7 +69,7 @@ public class LogonDBBeanTicket {
 			int count = rs.getRow();
 			rs.beforeFirst();
 			
-			Info = new String[count][6];
+			Info = new String[count][7];
 			System.out.println(count+"count:");
 			
 			int r=0; //행
@@ -80,6 +80,7 @@ public class LogonDBBeanTicket {
 				Info[r][3] = rs.getString("좌석코드");
 				Info[r][4] = rs.getString("상영일정코드");
 				Info[r][5] = rs.getString("상영관아이디");
+				Info[r][6] = rs.getString("영화아이디");
 				r+=1;
 			}
 		

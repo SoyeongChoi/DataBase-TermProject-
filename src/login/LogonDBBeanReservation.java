@@ -28,12 +28,13 @@ public class LogonDBBeanReservation {
          try {
             conn = getConnection();
             
-            pstmt = conn.prepareStatement("insert into 예약 values (?, ?, ?, ?, ?)");
+            pstmt = conn.prepareStatement("insert into 예약 values (?, ?, ?, ?, ?, ?)");
             pstmt.setString(1, reservation.getRcode());
             pstmt.setString(2, reservation.getMId());
             pstmt.setString(3, reservation.getScode());
             pstmt.setString(4, reservation.getSchedule_code());
             pstmt.setString(5, reservation.getScreen_id());
+            pstmt.setString(6, reservation.getMovieId());
             pstmt.executeUpdate();
          }catch(Exception ex) {
             ex.printStackTrace();

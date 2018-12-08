@@ -47,7 +47,6 @@
 			 document.testform.action="insertScreenMovie.jsp";
 		}
 		if(index==2){
-			 request.setAttribute("mId", <%=mId%>);
 			 document.testform.action="screenScheduleManagement.jsp";
 		}
 		if(index==3){
@@ -96,12 +95,7 @@
 	radio.setAttribute("type", "radio");
 	radio.setAttribute("name", "sId");
 	radio.setAttribute("value", "<%=sId%>");
-	var temp = "<%=mId%>"+"";
-	if(temp === null){		
-		radio.setAttribute("onclick", "disabledF(1)");
-	}else{
-		radio.setAttribute("onclick", "disabledF(0)");
-	}
+	radio.setAttribute("onclick", "disabledF()");
 	td.appendChild(radio);
 	
 	var td0 = document.createElement("td");
@@ -144,15 +138,10 @@
 	</script>
 	
 	<script>
-	function disabledF(x){
+	function disabledF(){
 		document.getElementById("b1").disabled = false;
 		document.getElementById("b3").disabled = false;
-		switch (x){
-		case 0:
-			document.getElementById("b2").disabled = true;
-		case 1:
-			document.getElementById("b2").disabled = false;
-		}
+		document.getElementById("b2").disabled = false;
 	}
 	</script>
 </body>

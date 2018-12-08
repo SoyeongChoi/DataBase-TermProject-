@@ -51,13 +51,14 @@
   	String id = request.getParameter("id");
   	String theater_name = request.getParameter("theater");
   	String date = request.getParameter("date");
+  	System.out.println("휴...."+date);
   	System.out.println(theater_name);
   	LogonDBBeanScreen logon = LogonDBBeanScreen.getInstance();
     String[][] Info = logon.getInfoAll(id,theater_name);
       Class.forName("com.mysql.jdbc.Driver");
       String jdbcUrl = "jdbc:mysql://localhost:3306/reservation_system?useUnicode=true&characterEncoding=utf8";
       String dbId = "root";
-      String dbPass = "thdud5313";
+      String dbPass = "Lovedkwjd23@";
      
       %>
    

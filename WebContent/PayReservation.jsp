@@ -90,13 +90,13 @@
                String ScheduleCode = rs.getString(4);
                String[] seat = SeatCode.split("@");
                String ScreenId = rs.getString(5);
+               String MovieId = rs.getString(6);
                //두번째 쿼리
                Statement stmt2 = conn.createStatement();
                String ScreenSql = "select 영화아이디, 영화관이름, 상영관이름 from 상영관 where 상영관아이디=" + "'" + ScreenId + "'";
                System.out.println(ScreenSql);
                ResultSet rs2 = stmt2.executeQuery(ScreenSql);
                rs2.first();
-               String MovieId = rs2.getString(1);
                String TheaterName = rs2.getString(2);
                String ScreenName = rs2.getString(3);
                //세번째 쿼리
@@ -154,7 +154,7 @@
             if (input <= <%=point%> && input <= <%=ticket%>) {
 
                if (input >= 0) {
-            	   
+                  
                   temp = input;
                   var origin = 10000;
                   total = origin - input;
